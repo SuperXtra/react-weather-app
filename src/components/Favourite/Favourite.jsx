@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
-import {Button, ButtonGroup, ButtonToolbar} from "react-bootstrap";
+import {Button, ButtonGroup} from "react-bootstrap";
 
 const Favourite = (props) => {
     return (

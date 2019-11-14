@@ -1,110 +1,93 @@
 import React, {Component} from 'react';
-import FormGroup from "react-bootstrap/FormGroup";
-import FormControl from "react-bootstrap/FormControl";
-import {FormText} from "react-bootstrap";
-import Weather from "../../components/weather/Weather";
-import axios from './../../axios-openWeather';
+import Weather from "../../components/Weather/Weather";
+import {connect} from 'react-redux';
+import axiosOpenWeather from './../../axios-openWeather';
+import axiosFirebase from './../../axios-firebase';
+import cssClasses from './SearchData.module.css'
+import WithErrorHandler from './../../hoc/withErrorHandler/withErrorHandler';
+import * as actions from "../../store/actions";
 
 class SearchData extends Component {
 
-    state = {
-        location: "",
-        city: "",
-        country: "",
-        temperature: "",
-        maxTemp: "",
-        minTemp: "",
-        pressure: "",
-        humidity: "",
-        icon: "",
-        sunrise: "",
-        sunset: "",
-        clouds: "",
-        windSpeed:"",
-        weatherDescription:"",
-        searchDataAvailable: false
+    // shouldComponentUpdate(nextProps, nextState, nextContext) {
+    //     if (this.state.weather.city === nextState.city && this.state.weather.country === nextState.country){
+    //         return false;
+    //     } else {
+    //         return true;
+    //     }
+    // }
+
+    addToFavourites = (event) => {
+        event.preventDefault();
+        const data = {
+            location: this.props.weather.city,
+            countryCode: this.props.weather.country,
+            userId: this.props.userId
+        };
+        axiosFirebase.post('favourites.json?auth=' + this.props.token, data)
+            .then(response => {
+                console.log(response)
+            })
+            .catch(error => {
+                console.log(error)
+            })
     };
+
 
 
     getWeather = (event) => {
         event.preventDefault();
 
-        const city = event.target.city.value;
-        const countryId = event.target.country.value;
+        const city = event.target.city.value.toUpperCase();
+        const country = event.target.country.value.toUpperCase();
 
-        this.setState({location: city + ", " + countryId});
-
-        if (city && countryId){
-            axios.get('weather?q=' + city + ',' + countryId + '&appid=68cbe56877c79ff898b48daef75033f8&units=metric')
-                .then(response => {
-                    this.setState({
-                        temperature: response.data.main.temp,
-                        maxTemp: response.data.main.temp_max,
-                        minTemp: response.data.main.temp_min,
-                        pressure: response.data.main.pressure,
-                        humidity: response.data.main.humidity,
-                        icon: response.data.weather[0].icon,
-                        weatherDescription:response.data.weather[0].description,
-                        sunrise: response.data.sys.sunrise,
-                        sunset: response.data.sys.sunset,
-                        clouds: response.data.clouds.all,
-                        windSpeed:response.data.wind.speed,
-                        searchDataAvailable: true
-                    });
-                    console.log(response.data);
-                    console.log(this.state.temperature)
-                })
-                .catch(error => {
-                    console.log(error)
-                });
-        }
-
+        this.props.fetchWeatherData(city, country);
     };
 
-    // const apiKey = "68cbe56877c79ff898b48daef75033f8";
-
-
-
-
     render() {
-        // let inputForm = (
-        //     <form>
-        //         <FormGroup controlId="formBasicCity">
-        //             <FormControl type="text" placeholder="Enter City"/>
-        //             <FormText className="text-muted">
-        //                 Please provide city of which you would like to check weather.
-        //             </FormText>
-        //         </FormGroup>
-        //     </form>
-        // );
 
         const inputForm = (
-            <form onSubmit={this.getWeather}>
-                <input type="text" name="city" placeholder="City..."/>
-                <input type="text" name="country" placeholder="Country..."/>
-                <button>Get Weather</button>
-            </form>
+            <div className="d-flex justify-content-center align-items-center container ">
+                <form onSubmit={this.getWeather}>
+                    <div className="form-row align-items-center">
+                        <div className="col-auto">
+                            <input className="form-control mb-2" type="text" name="city" placeholder="City..."/>
+                        </div>
+                        <div className="col-auto">
+                            <input className="form-control mb-2" type="text" name="country" placeholder="Country..."/>
+                        </div>
+                    </div>
+                    <div className={cssClasses.CenterButton}>
+                        <button type="submit" className="btn btn-primary mb-2">Get Weather</button>
+                    </div>
+                </form>
+            </div>
         );
+
+
+             const addToFavouritesButton = (
+                <div className={cssClasses.CenterButton}>
+                    <button
+                        onClick={this.addToFavourites}
+                        className="btn btn-primary mb-2"
+                        disabled={!this.props.isAuthenticated}>{this.props.isAuthenticated ? 'Add to Favourites' : 'Log in to add'}</button>
+                </div>
+            );
 
         let weather = null;
 
-        if (this.state.searchDataAvailable){
+        if (this.props.loaded) {
             weather = (
-                <Weather
-                    location={this.state.location}
-                    maxTemperature={this.state.maxTemp}
-                    icon={this.state.icon}
-                    minTemperature={this.state.minTemp}
-                    pressure={this.state.pressure}
-                    sunrise={this.state.sunrise}
-                    sunset={this.state.sunset}
-                    weatherDescription={this.state.weatherDescription}
-                    windSpeed={this.state.windSpeed}
-                    temperature={this.state.temperature}
-                    clouds={this.state.clouds}
-                    humidity={this.state.humidity}/>
+                <div className="d-flex justify-content-center align-items-center container">
+                    <div>
+                        <Weather
+                            weather={this.props.weather}/>
+                        {addToFavouritesButton}
+                    </div>
+                </div>
             );
         }
+
 
         return (
             <div>
@@ -115,4 +98,20 @@ class SearchData extends Component {
     }
 }
 
-export default SearchData;
+const mapStateToProps = state => {
+    return {
+        token: state.authentication.token,
+        userId: state.authentication.userId,
+        isAuthenticated: state.authentication.token !== null,
+        weather: state.weatherData.weather,
+        loaded: state.weatherData.loaded
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        fetchWeatherData: (city, country) => dispatch(actions.onFetchWeatherData(city, country))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WithErrorHandler(SearchData, axiosFirebase, axiosOpenWeather));

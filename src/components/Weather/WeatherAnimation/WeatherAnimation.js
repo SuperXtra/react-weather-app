@@ -1,15 +1,13 @@
-import React, {Component} from 'react';
+import React from 'react';
+import cssStyles from './WeatherAnimation.module.css';
 
-class WeatherAnimation extends Component {
-
-    render() {
-        return (
-            <div>
-                <img src ={`http://openweathermap.org/img/w/${this.props.icon}.png`}
-                     alt="wthr img" />
-            </div>
-        );
-    }
-}
+const WeatherAnimation = (props) => {
+    return (
+        <div className={cssStyles.Image} style={{height: props.height}}>
+            <img src ={`http://openweathermap.org/img/w/${props.icon}.png`}
+                 alt="wthr img" />
+        </div>
+    )
+};
 
 export default WeatherAnimation;

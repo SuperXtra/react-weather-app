@@ -1,6 +1,6 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL: 'https://api.openweathermap.org/data/2.5'
+    baseURL: 'https://weather-app-sx.firebaseio.com/'
 });
 export default instance;

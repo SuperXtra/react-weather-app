@@ -1,0 +1,11 @@
+.Image {
+    background-color: transparent;
+    padding: 8px;
+    height: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+.Image img {
+    height: 100%;
+}
