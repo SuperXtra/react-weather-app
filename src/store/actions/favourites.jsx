@@ -35,7 +35,6 @@ export const fetchFavourites = (token, userId) => {
                          id: key
                      });
                  }
-                 console.log(fetchedFavourites)
                  dispatch(fetchFavouritesSuccess(fetchedFavourites));
              })
             .catch(error => {
