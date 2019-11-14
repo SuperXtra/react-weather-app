@@ -1,5 +1,8 @@
 import * as actionTypes from './actionTypes';
 import axiosOpenWeather from '../../axios-openWeather';
+import * as config from './../../configParameters';
+
+const API_KEY = config.OPEN_WEATHER_API_KEY;
 
 export const fetchWeatherDataStart = () => {
     return {
@@ -24,7 +27,7 @@ export const fetchWeatherDataFail = (error) => {
 export const onFetchWeatherData = (city, country) => {
     return dispatch => {
         dispatch(fetchWeatherDataStart());
-        axiosOpenWeather.get('weather?q=' + city + ',' + country + '&appid=68cbe56877c79ff898b48daef75033f8&units=metric')
+        axiosOpenWeather.get('weather?q=' + city + ',' + country + '&appid='+ API_KEY+'&units=metric')
             .then(response => {
                     const weather = {
                         city: city,

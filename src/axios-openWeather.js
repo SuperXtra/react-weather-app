@@ -1,6 +1,7 @@
 import axios from "axios";
+import * as config from './configParameters';
 
 const instance = axios.create({
-    baseURL: 'https://api.openweathermap.org/data/2.5'
+    baseURL: config.WEATHER_API_BASE_URL
 });
 export default instance;
