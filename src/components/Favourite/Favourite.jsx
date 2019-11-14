@@ -4,7 +4,7 @@ import {Button, ButtonGroup} from "react-bootstrap";
 
 const Favourite = (props) => {
     return (
-        <Card className="text-center" border="light" style={{width: '20rem'}} bg="light" body key={props.id}>
+        <Card className="text-center h-100" border="light" style={{width: '20rem'}} bg="light" body key={props.id}>
             <Card.Header>{props.city}, {props.country}</Card.Header>
             <Card.Text>
                 <p></p>
