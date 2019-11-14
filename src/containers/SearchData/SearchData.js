@@ -9,14 +9,6 @@ import * as actions from "../../store/actions";
 
 class SearchData extends Component {
 
-    // shouldComponentUpdate(nextProps, nextState, nextContext) {
-    //     if (this.state.weather.city === nextState.city && this.state.weather.country === nextState.country){
-    //         return false;
-    //     } else {
-    //         return true;
-    //     }
-    // }
-
     addToFavourites = (event) => {
         event.preventDefault();
         const data = {

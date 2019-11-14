@@ -27,7 +27,7 @@ export const fetchWeatherDataFail = (error) => {
 export const onFetchWeatherData = (city, country) => {
     return dispatch => {
         dispatch(fetchWeatherDataStart());
-        axiosOpenWeather.get('weather?q=' + city + ',' + country + '&appid='+ API_KEY+'&units=metric')
+        axiosOpenWeather.get(`weather?q=${city},${country}&appid=${API_KEY}&units=metric`)
             .then(response => {
                     const weather = {
                         city: city,

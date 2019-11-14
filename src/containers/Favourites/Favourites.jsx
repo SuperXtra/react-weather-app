@@ -9,6 +9,7 @@ import Weather from "../../components/Weather/Weather";
 import axiosOpenWeather from "../../axios-openWeather";
 import cssStyles from './Favourites.module.css';
 import CardDeck from "react-bootstrap/CardDeck";
+import * as config from './../../configParameters';
 
 class Favourites extends Component {
 
@@ -58,7 +59,7 @@ class Favourites extends Component {
 
     showWeather = (city, country) => {
 
-        axiosOpenWeather.get('weather?q=' + city + ',' + country + '&appid=68cbe56877c79ff898b48daef75033f8&units=metric')
+        axiosOpenWeather.get('weather?q=' + city + ',' + country + '&appid='+config.OPEN_WEATHER_API_KEY+'&units=metric')
             .then(response => {
                 this.setState({
                     weather: {
