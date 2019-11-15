@@ -21,6 +21,25 @@ export const addToFavouritesFail = (error) => {
     }
 };
 
+export const removeFromFavouritesStart = () => {
+    return {
+        type: actionTypes.REMOVE_FROM_FAVOURITES_START
+    }
+};
+
+export const removeFromFavouritesSuccess = (response) => {
+    return {
+        type: actionTypes.REMOVE_FROM_FAVOURITES_SUCCESS,
+        response: response
+    }
+};
+
+export const removeFromFavouritesFail = (error) => {
+    return {
+        type: actionTypes.REMOVE_FROM_FAVOURITES_FAIL,
+        error: error
+    }
+};
 
 export const fetchFavouritesStart = () => {
     return {
@@ -45,8 +64,8 @@ export const fetchFavouritesFail = (error) => {
 export const fetchFavourites = (token, userId) => {
     return dispatch => {
         dispatch(fetchFavouritesStart());
-        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
-        axios.get('/favourites.json' + queryParams)
+        const queryParams = `?auth=${token}&orderBy="userId"&equalTo="${userId}"`;
+        axios.get(`/favourites.json${queryParams}`)
             .then(response => {
                 const fetchedFavourites = [];
                 for (let key in response.data) {
@@ -77,6 +96,19 @@ export const addToFavourites = (token, location, country, userId) => {
             })
             .catch(error => {
                 dispatch(addToFavouritesFail(error))
+            })
+    }
+};
+
+export const removeFromFavourites = (id, token) => {
+    return dispatch => {
+        dispatch(removeFromFavouritesStart());
+        axios.delete(`/favourites/${id}.json?auth=${token}`)
+            .then(response => {
+                dispatch(removeFromFavouritesSuccess(response))
+            })
+            .catch(error => {
+                dispatch(removeFromFavouritesFail(error))
             })
     }
 };

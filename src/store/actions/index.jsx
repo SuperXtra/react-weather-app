@@ -7,7 +7,8 @@ export {
 
 export {
     fetchFavourites,
-    addToFavourites
+    addToFavourites,
+    removeFromFavourites
 } from './favourites';
 
 export {

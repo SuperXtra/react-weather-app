@@ -6,6 +6,7 @@ import axiosFirebase from './../../axios-firebase';
 import cssClasses from './SearchData.module.css'
 import WithErrorHandler from './../../hoc/withErrorHandler/withErrorHandler';
 import * as actions from "../../store/actions";
+import {Button} from "react-bootstrap";
 
 class SearchData extends Component {
 
@@ -39,7 +40,7 @@ class SearchData extends Component {
                         </div>
                     </div>
                     <div className={cssClasses.CenterButton}>
-                        <button type="submit" className="btn btn-primary mb-2">Get Weather</button>
+                        <Button type="submit" className="mr-1" variant="outline-success" size="sm">Get Weather</Button>
                     </div>
                 </form>
             </div>
@@ -48,10 +49,9 @@ class SearchData extends Component {
 
              const addToFavouritesButton = (
                 <div className={cssClasses.CenterButton}>
-                    <button
+                    <Button className="mr-1" variant="outline-success" size="sm"
                         onClick={this.addToFavouritesEvent}
-                        className="btn btn-primary mb-2"
-                        disabled={!this.props.isAuthenticated}>{this.props.isAuthenticated ? 'Add to Favourites' : 'Log in to add'}</button>
+                        disabled={!this.props.isAuthenticated}>{this.props.isAuthenticated ? 'Add to Favourites' : 'Log in to add'}</Button>
                 </div>
             );
 

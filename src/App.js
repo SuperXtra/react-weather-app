@@ -7,7 +7,7 @@ import Layout from './hoc/Layout/Layout';
 import SearchData from "./containers/SearchData/SearchData";
 import Authentication from './containers/Authentication/Authentication';
 import Favourites from "./containers/Favourites/Favourites";
-import Logout from './containers/logout/logout';
+import Logout from './containers/Logout/logout';
 
 class App extends Component {
 

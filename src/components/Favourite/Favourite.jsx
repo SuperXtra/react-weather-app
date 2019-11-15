@@ -7,8 +7,7 @@ const Favourite = (props) => {
         <Card className="text-center h-100" border="light" style={{width: '20rem'}} bg="light" body key={props.id}>
             <Card.Header>{props.city}, {props.country}</Card.Header>
             <Card.Text>
-                <p></p>
-                <p>For more information click "show weather"</p>
+                <br/>For more information click <br/> "Show weather"
             </Card.Text>
             <div className="text-center">
                 <ButtonGroup>

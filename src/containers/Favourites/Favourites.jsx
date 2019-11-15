@@ -6,30 +6,22 @@ import AxiosFirebase from './../../axios-firebase';
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import cssClasses from "../SearchData/SearchData.module.css";
 import Weather from "../../components/Weather/Weather";
-import cssStyles from './Favourites.module.css';
+import Modal from "../../components/UI/Modal/Modal";
 
 class Favourites extends Component {
 
     state = {
-        showWeatherClicked: false,
+        favourites: [],
+        showWeatherClicked: false
     };
 
     removeFromFavourites = (id) => {
+
         const array = this.props.favourites;
+        this.props.onRemoveFromFavourites(id, this.props.token)
 
-        AxiosFirebase.delete('/favourites/' + id + '.json?auth=' + this.props.token)
-            .then(res => {
-                console.log(res)
-            })
-            .catch(err => {
-                console.log(err)
-            });
-
-        for (let i = 0; i < array.length; i++) {
-            if (array[i].id === id)
-                array.splice(i, 1)
-        }
-        this.setState({favourites: array, showWeatherClicked: false})
+        const  updatedArray = array.filter(element => element.id !== id);
+        this.setState({favourites: updatedArray, showWeatherClicked: false})
     };
 
     componentDidMount() {
@@ -39,6 +31,11 @@ class Favourites extends Component {
     showWeather = (city, country) => {
         this.props.onShowWeather(city, country);
         this.setState({showWeatherClicked: true})
+    };
+
+
+    weatherConfirmedHandler = () => {
+        this.setState( { showWeatherClicked: false } );
     };
 
 
@@ -65,10 +62,14 @@ class Favourites extends Component {
                             city={favourite.location}
                             country={favourite.countryCode}
                             wantToShowWeather={() => this.showWeather(favourite.location, favourite.countryCode)}
-                            removeFromFavourites={() => this.removeFromFavourites(favourite.id, this.props.token)}
+                            removeFromFavourites={() => this.removeFromFavourites(favourite.id)}
                         />
                     ))}
-                <div className={cssStyles.marginsForWeather}>{weather}</div>
+                <Modal
+                    show={this.state.showWeatherClicked}
+                    modalClosed={this.weatherConfirmedHandler}>
+                    {weather}
+                </Modal>
             </div>
         );
     }
@@ -87,7 +88,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onFetchFavourites: (token, userId) => dispatch(actions.fetchFavourites(token, userId)),
-        onShowWeather: (city, country) => dispatch(actions.onFetchWeatherData(city, country))
+        onShowWeather: (city, country) => dispatch(actions.onFetchWeatherData(city, country)),
+        onRemoveFromFavourites: (id, token) => dispatch(actions.removeFromFavourites(id, token))
     }
 };
 

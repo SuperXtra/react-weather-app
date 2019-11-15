@@ -132,9 +132,6 @@ if (this.props.loading) {
 let authRedirect = null;
 
 if (this.props.isAuthenticated) {
-    console.log("should redirect to /");
-    console.log(this.props.isAuthenticated);
-    // this.props.history.push('/')
     authRedirect = <Redirect to="/favourites"/>
 }
 
