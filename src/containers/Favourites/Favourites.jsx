@@ -7,6 +7,7 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import cssClasses from "../SearchData/SearchData.module.css";
 import Weather from "../../components/Weather/Weather";
 import Modal from "../../components/UI/Modal/Modal";
+import {ListGroup} from "react-bootstrap";
 
 class Favourites extends Component {
 
@@ -53,8 +54,11 @@ class Favourites extends Component {
             );
         }
 
-        return (
-            <div className="container-fluid">
+        let favourites = <div className="text-center mt-5"><h3>Please add some positions to favourites!</h3></div>
+
+        if(this.props.favourites.length !== 0) {
+            favourites = (
+                <ListGroup>
                     {this.props.favourites.map(favourite => (
                         <Favourite
                             id={favourite.id}
@@ -65,6 +69,14 @@ class Favourites extends Component {
                             removeFromFavourites={() => this.removeFromFavourites(favourite.id)}
                         />
                     ))}
+                </ListGroup>
+            )
+        }
+
+
+        return (
+            <div className="container-fluid">
+                {favourites}
                 <Modal
                     show={this.state.showWeatherClicked}
                     modalClosed={this.weatherConfirmedHandler}>

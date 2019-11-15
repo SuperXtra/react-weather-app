@@ -10,27 +10,28 @@ const weather = (props) => {
             <div>
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-3 bg-light justify-content-center">
+                        <div className="col-3  justify-content-center">
                             <div className={styles.Logo}>
                                 <WeatherAnimation
-                                    icon={props.weather.icon}/>
+                                    icon={props.weather.icon}
+                                    id={props.weather.id}/>
                             </div>
                         </div>
-                        <div className="col-9 bg-light border-dark text-center">
+                        <div className="col-9  border-dark text-center">
                             {props.weather.city}, {props.weather.country}
 
                             <div className="row text-center">
-                                <div className="col-12 bg-light rounded">
+                                <div className="col-12  rounded">
                                     <h6>Temperature:</h6>
                                     <div className="border-bottom h6">{props.weather.temperature} {'\u00b0'}</div>
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col-6 bg-light rounded">
+                                <div className="col-6  rounded">
                                     <h6>Humidity:</h6>
                                     <div className="border-bottom h6">{props.weather.humidity} %</div>
                                 </div>
-                                <div className="col-6 bg-light rounded">
+                                <div className="col-6  rounded">
                                     <h6>Pressure:</h6>
                                     <div className="border-bottom h6">{props.weather.pressure} hPa</div>
                                 </div>
@@ -38,7 +39,7 @@ const weather = (props) => {
 
 
                             <div className="row">
-                                <div className="col-6 bg-light rounded">
+                                <div className="col-6  rounded">
                                     <h6>Sunrise:</h6>
                                     <div className="border-bottom h6">
                                         <Moment format="hh:mm:ss A" unix>
@@ -46,7 +47,7 @@ const weather = (props) => {
                                         </Moment>
                                     </div>
                                 </div>
-                                <div className="col-6 bg-light rounded">
+                                <div className="col-6  rounded">
                                     <h6>Sunset:</h6>
                                     <div className="border-bottom h6">
                                         <Moment format="hh:mm:ss A" unix>
@@ -56,17 +57,17 @@ const weather = (props) => {
                             </div>
 
                             <div className="row">
-                                <div className="col-6 bg-light rounded">
+                                <div className="col-6  rounded">
                                     <h6>Min Temp:</h6>
                                     <div className="border-bottom h6">{props.weather.minTemp} {'\u00b0'}</div>
                                 </div>
-                                <div className="col-6 bg-light rounded">
+                                <div className="col-6  rounded">
                                     <h6>Max Temp:</h6>
                                     <div className="border-bottom h6">{props.weather.maxTemp} {'\u00b0'}</div>
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col-12 bg-light border-bottom text-center">
+                                <div className="col-12  border-bottom text-center">
                                     {props.weather.weatherDescription}
                                 </div>
                             </div>

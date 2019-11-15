@@ -29,9 +29,11 @@ export const onFetchWeatherData = (city, country) => {
         dispatch(fetchWeatherDataStart());
         axiosOpenWeather.get(`weather?q=${city},${country}&appid=${API_KEY}&units=metric`)
             .then(response => {
+                console.log(response);
                     const weather = {
                         city: city,
                         country: country,
+                        id: response.data.weather[0].id,
                         temperature: response.data.main.temp,
                         maxTemp: response.data.main.temp_max,
                         minTemp: response.data.main.temp_min,

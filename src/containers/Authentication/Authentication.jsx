@@ -140,9 +140,11 @@ if (this.props.isAuthenticated) {
                 {authRedirect}
                 <form onSubmit={this.submitHandler}>
                     {form}
-                    <button type="submit" className="btn btn-primary mb-2">{this.state.isSignup ? 'Login' : 'Create account' }</button>
-                </form>
-                <button onClick={this.switchAuthModeHandler} type="submit" className="btn btn-secondary mb-2">SWITCH TO {this.state.isSignup ? 'SIGN UP' : 'SIGN IN' }</button>
+                    <div className="text-center">
+                    <button type="submit" className="btn btn-outline-success mr-1 ml-2">{this.state.isSignup ? 'Login' : 'Create account' }</button>
+                    <button onClick={this.switchAuthModeHandler} type="submit" className="btn btn-outline-warning ml-1">SWITCH TO {this.state.isSignup ? 'SIGN UP' : 'SIGN IN' }</button>
+                    </div>
+                    </form>
             </div>
         );
     }

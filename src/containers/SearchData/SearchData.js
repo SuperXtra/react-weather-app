@@ -38,9 +38,11 @@ class SearchData extends Component {
                         <div className="col-auto">
                             <input className="form-control mb-2" type="text" name="country" placeholder="Country..."/>
                         </div>
-                    </div>
+                        <div className="col-auto">
+                        <Button type="submit" className="mb-2" variant="outline-success">Get Weather</Button>
+                        </div>
+                        </div>
                     <div className={cssClasses.CenterButton}>
-                        <Button type="submit" className="mr-1" variant="outline-success" size="sm">Get Weather</Button>
                     </div>
                 </form>
             </div>
@@ -63,7 +65,9 @@ class SearchData extends Component {
                     <div>
                         <Weather
                             weather={this.props.weather}/>
+                            <div className="m-2">
                         {addToFavouritesButton}
+                            </div>
                     </div>
                 </div>
             );
@@ -73,7 +77,9 @@ class SearchData extends Component {
         return (
             <div>
                 {inputForm}
+                <div className="m-5">
                 {weather}
+                </div>
             </div>
         );
     }
