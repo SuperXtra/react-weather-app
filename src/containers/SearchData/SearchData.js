@@ -9,20 +9,9 @@ import * as actions from "../../store/actions";
 
 class SearchData extends Component {
 
-    addToFavourites = (event) => {
+    addToFavouritesEvent = (event) => {
         event.preventDefault();
-        const data = {
-            location: this.props.weather.city,
-            countryCode: this.props.weather.country,
-            userId: this.props.userId
-        };
-        axiosFirebase.post('favourites.json?auth=' + this.props.token, data)
-            .then(response => {
-                console.log(response)
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        this.props.addToFavourites(this.props.token, this.props.weather.city, this.props.weather.country, this.props.userId);
     };
 
 
@@ -60,7 +49,7 @@ class SearchData extends Component {
              const addToFavouritesButton = (
                 <div className={cssClasses.CenterButton}>
                     <button
-                        onClick={this.addToFavourites}
+                        onClick={this.addToFavouritesEvent}
                         className="btn btn-primary mb-2"
                         disabled={!this.props.isAuthenticated}>{this.props.isAuthenticated ? 'Add to Favourites' : 'Log in to add'}</button>
                 </div>
@@ -102,7 +91,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchWeatherData: (city, country) => dispatch(actions.onFetchWeatherData(city, country))
+        fetchWeatherData: (city, country) => dispatch(actions.onFetchWeatherData(city, country)),
+        addToFavourites: (token, location, country, userId) => dispatch(actions.addToFavourites(token, location, country, userId))
     }
 };
 

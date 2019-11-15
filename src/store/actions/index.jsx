@@ -6,7 +6,8 @@ export {
 } from './auth';
 
 export {
-    fetchFavourites
+    fetchFavourites,
+    addToFavourites
 } from './favourites';
 
 export {
