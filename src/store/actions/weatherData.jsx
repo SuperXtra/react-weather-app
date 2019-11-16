@@ -29,7 +29,6 @@ export const onFetchWeatherData = (city, country) => {
         dispatch(fetchWeatherDataStart());
         axiosOpenWeather.get(`weather?q=${city},${country}&appid=${API_KEY}&units=metric`)
             .then(response => {
-                console.log(response);
                     const weather = {
                         city: city,
                         country: country,
@@ -44,10 +43,14 @@ export const onFetchWeatherData = (city, country) => {
                         sunrise: response.data.sys.sunrise,
                         sunset: response.data.sys.sunset,
                         clouds: response.data.clouds.all,
-                        windSpeed: response.data.wind.speed
+                        windSpeed: response.data.wind.speed,
+                        lat: response.data.coord.lat,
+                        lon: response.data.coord.lon
                     };
                     dispatch(fetchWeatherDataSuccess(weather))
-                })
+                console.log(weather);
+
+            })
             .catch(error => {
                 dispatch(fetchWeatherDataFail(error))
             });

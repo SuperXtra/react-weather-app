@@ -1,16 +1,23 @@
 import React from "react";
-import {Button, Col, Container, Jumbotron, Row} from "react-bootstrap";
+import {Button, Col, Container} from "react-bootstrap";
+import Clock from 'react-clock';
 
 const Favourite = (props) => {
     return (
         <div>
-            <Jumbotron>
+            <div className="jumbotron d-flex align-items-center">
                 <Container>
-                    <Row>
-                        <Col md={8}>
+                    <div className="row align-items-center">
+                        <Col md={4}>
+                            <Clock
+                                size={100}
+                                value={props.date}
+                            />
+                        </Col>
+                        <Col md={4}>
                             <h3>{props.city}, {props.country}</h3>
                         </Col>
-                        <Col md={6}>
+                        <Col md={4}>
                             <Button className="mr-1"
                                     variant="outline-success"
                                     size="sm"
@@ -24,9 +31,9 @@ const Favourite = (props) => {
                                 Dislike
                             </Button>
                         </Col>
-                    </Row>
+                    </div>
                 </Container>
-            </Jumbotron>
+            </div>
         </div>
     );
 };

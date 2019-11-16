@@ -49,6 +49,9 @@ class Authentication extends Component {
 
     checkValidity(value, rules) {
         let isValid = true;
+        const patternNumeric = /^\d+$/;
+        const patternEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+
         if (!rules) {
             return true;
         }
@@ -66,16 +69,16 @@ class Authentication extends Component {
         }
 
         if (rules.isEmail) {
-            const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-            isValid = pattern.test(value) && isValid
+            isValid = patternEmail.test(value) && isValid
         }
 
+
         if (rules.isNumeric) {
-            const pattern = /^\d+$/;
-            isValid = pattern.test(value) && isValid
+            isValid = patternNumeric.test(value) && isValid
         }
 
         return isValid;
+
     }
 
     inputChangedHandler = (event, controlName) => {

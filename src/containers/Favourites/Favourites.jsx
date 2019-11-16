@@ -13,7 +13,8 @@ class Favourites extends Component {
 
     state = {
         favourites: [],
-        showWeatherClicked: false
+        showWeatherClicked: false,
+        date: new Date()
     };
 
     removeFromFavourites = (id) => {
@@ -27,6 +28,10 @@ class Favourites extends Component {
 
     componentDidMount() {
         this.props.onFetchFavourites(this.props.token, this.props.userId);
+        setInterval(
+            () => this.setState({ date: new Date() }),
+            1000
+        );
     }
 
     showWeather = (city, country) => {
@@ -63,6 +68,7 @@ class Favourites extends Component {
                         <Favourite
                             id={favourite.id}
                             key={favourite.id}
+                            date={this.state.date}
                             city={favourite.location}
                             country={favourite.countryCode}
                             wantToShowWeather={() => this.showWeather(favourite.location, favourite.countryCode)}
