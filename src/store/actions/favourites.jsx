@@ -112,3 +112,5 @@ export const removeFromFavourites = (id, token) => {
             })
     }
 };
+
+//TO DO fetch current time when loading
