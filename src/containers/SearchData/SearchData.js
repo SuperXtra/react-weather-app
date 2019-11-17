@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import Weather from "../../components/Weather/Weather";
 import {connect} from 'react-redux';
-import axiosOpenWeather from './../../axios-openWeather';
-import axiosFirebase from './../../axios-firebase';
+import axiosOpenWeather from '../../axios/axios-openWeather';
+import axiosFirebase from '../../axios/axios-firebase';
 import cssClasses from './SearchData.module.css'
 import WithErrorHandler from './../../hoc/withErrorHandler/withErrorHandler';
 import * as actions from "../../store/actions";

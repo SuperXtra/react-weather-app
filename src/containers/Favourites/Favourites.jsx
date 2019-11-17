@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {connect} from 'react-redux';
 import * as actions from '../../store/actions/index';
 import Favourite from "../../components/Favourite/Favourite";
-import AxiosFirebase from './../../axios-firebase';
+import AxiosFirebase from '../../axios/axios-firebase';
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import cssClasses from "../SearchData/SearchData.module.css";
 import Weather from "../../components/Weather/Weather";
@@ -28,6 +28,7 @@ class Favourites extends Component {
 
     componentDidMount() {
         this.props.onFetchFavourites(this.props.token, this.props.userId);
+        this.props.onFetchCurrentTime(-33.85, 151.22);
         setInterval(
             () => this.setState({ date: new Date() }),
             1000
@@ -107,7 +108,8 @@ const mapDispatchToProps = dispatch => {
     return {
         onFetchFavourites: (token, userId) => dispatch(actions.fetchFavourites(token, userId)),
         onShowWeather: (city, country) => dispatch(actions.onFetchWeatherData(city, country)),
-        onRemoveFromFavourites: (id, token) => dispatch(actions.removeFromFavourites(id, token))
+        onRemoveFromFavourites: (id, token) => dispatch(actions.removeFromFavourites(id, token)),
+        onFetchCurrentTime: (lat, lng) => dispatch(actions.fetchCurrentTime(lat, lng))
     }
 };
 

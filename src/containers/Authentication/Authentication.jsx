@@ -6,7 +6,12 @@ import * as actions from '../../store/actions/index';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { Redirect } from 'react-router-dom';
 
+const patternNumeric = /^\d+$/;
+const patternEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+
+
 class Authentication extends Component {
+
 
     state = {
         controls: {
@@ -47,39 +52,29 @@ class Authentication extends Component {
             this.props.onSetAuthRedirectPath();
     }
 
+
+
     checkValidity(value, rules) {
-        let isValid = true;
-        const patternNumeric = /^\d+$/;
-        const patternEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+
+        const validateEmail = (value, rules) => rules.isEmail ? patternEmail.test(value) : true;
+        const isEmpty = (value, rules) => rules.required ? value.trim() !== '' : true;
+        const validateMinimumLength = (value, rules) => rules.minLength ? value.length >= rules.minLength : true;
+        const validateMaximumLength = (value, rules) => rules.maxLength ? value.length <= rules.maxLength : true;
+        const validateNumericType = (value, rules) => rules.isNumeric ? patternNumeric.test(value) : true;
+
+        const validations = [
+            validateNumericType,
+            validateEmail,
+            validateMaximumLength,
+            validateMinimumLength,
+            isEmpty,
+        ];
 
         if (!rules) {
             return true;
-        }
-
-        if (rules.required) {
-            isValid = value.trim() !== '' && isValid;
-        }
-
-        if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid
-        }
-
-        if (rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid
-        }
-
-        if (rules.isEmail) {
-            isValid = patternEmail.test(value) && isValid
-        }
-
-
-        if (rules.isNumeric) {
-            isValid = patternNumeric.test(value) && isValid
-        }
-
-        return isValid;
-
+        } else return validations.map(x => x(value, rules)).reduceRight((prev, next)=>prev && next);
     }
+
 
     inputChangedHandler = (event, controlName) => {
         const updatedControls = {

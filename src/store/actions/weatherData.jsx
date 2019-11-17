@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import axiosOpenWeather from '../../axios-openWeather';
+import axiosOpenWeather from '../../axios/axios-openWeather';
 import * as config from './../../configParameters';
 
 const API_KEY = config.OPEN_WEATHER_API_KEY;

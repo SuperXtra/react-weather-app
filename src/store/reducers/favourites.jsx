@@ -49,6 +49,21 @@ const fetchFavouritesSuccess = (state, action) => {
     });
 };
 
+const fetchCurrentTimeFail = (state, action) => {
+    return updateObject(state, {loading: false});
+};
+
+const fetchCurrentTimeStart = (state, action) => {
+    return updateObject(state, {loading: true});
+};
+
+const fetchCurrentTimeSuccess = (state, action) => {
+    return updateObject(state, {
+        time: action.time,
+        loading: false
+    });
+};
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.FETCH_FAVOURITES_START: return fetchFavouritesStart(state, action);
@@ -60,6 +75,9 @@ const reducer = (state = initialState, action) => {
         case actionTypes.REMOVE_FROM_FAVOURITES_START: return removeFromFavouritesStart(state, action);
         case actionTypes.REMOVE_FROM_FAVOURITES_SUCCESS: return removeFromFavouritesSuccess(state, action);
         case actionTypes.REMOVE_FROM_FAVOURITES_FAIL: return removeFromFavouritesFail(state, action);
+        case actionTypes.FETCH_CURRENT_TIME_START: return fetchCurrentTimeStart(state, action);
+        case actionTypes.FETCH_CURRENT_TIME_SUCCESS: return fetchCurrentTimeSuccess(state, action);
+        case actionTypes.FETCH_CURRENT_TIME_FAIL: return fetchCurrentTimeFail(state, action);
         default: return state;
     }
 };
