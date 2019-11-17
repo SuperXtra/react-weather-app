@@ -5,6 +5,7 @@ import cssStyling from './Authentication.module.css';
 import * as actions from '../../store/actions/index';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { Redirect } from 'react-router-dom';
+import { _ } from 'underscore';
 
 const patternNumeric = /^\d+$/;
 const patternEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
@@ -70,9 +71,7 @@ class Authentication extends Component {
             isEmpty,
         ];
 
-        if (!rules) {
-            return true;
-        } else return validations.map(x => x(value, rules)).reduceRight((prev, next)=>prev && next);
+        return !rules ? true : _.every(validations.map(x => x(value, rules)));
     }
 
 
