@@ -8,13 +8,31 @@ import cssClasses from "../SearchData/SearchData.module.css";
 import Weather from "../../components/Weather/Weather";
 import Modal from "../../components/UI/Modal/Modal";
 import {ListGroup} from "react-bootstrap";
+import axiosTimeZoneDB from "../../axios/axios-timezonedb";
+import * as config from "../../configParameters";
+import Clock from 'react-clock';
 
-class Favourites extends Component {
+
+export class Favourites extends Component {
 
     state = {
         favourites: [],
+        date: '',
         showWeatherClicked: false,
-        date: new Date()
+        showClockClicked: false,
+    };
+
+    fetchCurrentTime = (lat, lng) => {
+        axiosTimeZoneDB.get(`${config.TIMEZONEDB_BASIC_URL}/v2.1/get-time-zone?key=${config.TIME_ZONE_DB}&format=json&by=position&lat=${lat}&lng=${lng}`)
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    date: response.data.formatted,
+                    showClockClicked: true})
+            })
+            .catch(error => {
+                return error
+            })
     };
 
     removeFromFavourites = (id) => {
@@ -22,17 +40,13 @@ class Favourites extends Component {
         const array = this.props.favourites;
         this.props.onRemoveFromFavourites(id, this.props.token)
 
-        const  updatedArray = array.filter(element => element.id !== id);
+        const updatedArray = array.filter(element => element.id !== id);
         this.setState({favourites: updatedArray, showWeatherClicked: false})
     };
 
     componentDidMount() {
         this.props.onFetchFavourites(this.props.token, this.props.userId);
-        this.props.onFetchCurrentTime(-33.85, 151.22);
-        setInterval(
-            () => this.setState({ date: new Date() }),
-            1000
-        );
+        this.setState({favourites: this.props.favourites})
     }
 
     showWeather = (city, country) => {
@@ -40,9 +54,12 @@ class Favourites extends Component {
         this.setState({showWeatherClicked: true})
     };
 
-
     weatherConfirmedHandler = () => {
-        this.setState( { showWeatherClicked: false } );
+        this.setState({showWeatherClicked: false});
+    };
+
+    clockConfirmedHandler = () => {
+        this.setState({showClockClicked: false})
     };
 
 
@@ -60,19 +77,27 @@ class Favourites extends Component {
             );
         }
 
+        let clock = null;
+
+        if (this.state.showClockClicked && this.state.date) {
+            clock = (
+                <Clock value={new Date(this.state.date)}/>
+            )
+        }
+
         let favourites = <div className="text-center mt-5"><h3>Please add some positions to favourites!</h3></div>
 
-        if(this.props.favourites.length !== 0) {
+        if (this.state.favourites.length !== 0) {
             favourites = (
                 <ListGroup>
-                    {this.props.favourites.map(favourite => (
+                    {this.state.favourites.map(favourite => (
                         <Favourite
                             id={favourite.id}
                             key={favourite.id}
-                            date={this.state.date}
                             city={favourite.location}
                             country={favourite.countryCode}
                             wantToShowWeather={() => this.showWeather(favourite.location, favourite.countryCode)}
+                            wantToShowClock={() => this.fetchCurrentTime(favourite.lat, favourite.lng)}
                             removeFromFavourites={() => this.removeFromFavourites(favourite.id)}
                         />
                     ))}
@@ -89,6 +114,13 @@ class Favourites extends Component {
                     modalClosed={this.weatherConfirmedHandler}>
                     {weather}
                 </Modal>
+
+                <Modal
+                    show={this.state.showClockClicked}
+                    modalClosed={this.clockConfirmedHandler}>
+                    {clock}
+                </Modal>
+
             </div>
         );
     }
@@ -109,7 +141,6 @@ const mapDispatchToProps = dispatch => {
         onFetchFavourites: (token, userId) => dispatch(actions.fetchFavourites(token, userId)),
         onShowWeather: (city, country) => dispatch(actions.onFetchWeatherData(city, country)),
         onRemoveFromFavourites: (id, token) => dispatch(actions.removeFromFavourites(id, token)),
-        onFetchCurrentTime: (lat, lng) => dispatch(actions.fetchCurrentTime(lat, lng))
     }
 };
 

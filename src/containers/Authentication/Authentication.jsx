@@ -11,7 +11,7 @@ const patternNumeric = /^\d+$/;
 const patternEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
 
 
-class Authentication extends Component {
+export class Authentication extends Component {
 
 
     state = {
@@ -71,7 +71,7 @@ class Authentication extends Component {
             isEmpty,
         ];
 
-        return !rules ? true : _.every(validations.map(x => x(value, rules)));
+        return !rules ? true : _.every(validations.map(x => x(value, rules)), x => x === true);
     }
 
 
@@ -109,7 +109,11 @@ class Authentication extends Component {
             });
         }
 
-        let form = formElementsArray.map(formElement => (
+        let form;
+        if (this.props.loading) {
+            form = <Spinner/>
+        }
+        form = formElementsArray.map(formElement => (
             <Input
                 key={formElement.id}
                 elementType={formElement.config.elementType}
@@ -122,9 +126,7 @@ class Authentication extends Component {
             />
         ));
 
-if (this.props.loading) {
-    form = <Spinner/>
-}
+
 
 let authRedirect = null;
 

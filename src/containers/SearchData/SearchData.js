@@ -8,11 +8,11 @@ import WithErrorHandler from './../../hoc/withErrorHandler/withErrorHandler';
 import * as actions from "../../store/actions";
 import {Button} from "react-bootstrap";
 
-class SearchData extends Component {
+export class SearchData extends Component {
 
     addToFavouritesEvent = (event) => {
         event.preventDefault();
-        this.props.addToFavourites(this.props.token, this.props.weather.city, this.props.weather.country, this.props.userId);
+        this.props.addToFavourites(this.props.token, this.props.weather.city, this.props.weather.country, this.props.userId, this.props.lat, this.props.lng);
     };
 
 
@@ -91,14 +91,16 @@ const mapStateToProps = state => {
         userId: state.authentication.userId,
         isAuthenticated: state.authentication.token !== null,
         weather: state.weatherData.weather,
-        loaded: state.weatherData.loaded
+        loaded: state.weatherData.loaded,
+        lat: state.weatherData.weather.lat,
+        lng: state.weatherData.weather.lng
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         fetchWeatherData: (city, country) => dispatch(actions.onFetchWeatherData(city, country)),
-        addToFavourites: (token, location, country, userId) => dispatch(actions.addToFavourites(token, location, country, userId))
+        addToFavourites: (token, location, country, userId, lat, lng) => dispatch(actions.addToFavourites(token, location, country, userId, lat, lng))
     }
 };
 

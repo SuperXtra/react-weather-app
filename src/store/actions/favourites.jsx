@@ -1,7 +1,5 @@
 import * as actionTypes from './actionTypes';
 import axiosFirebase from '../../axios/axios-firebase';
-import axiosTimeZoneDB from '../../axios/axios-timezonedb';
-import * as config from '../../configParameters';
 
 export const fetchCurrentTimeStart = () => {
     return {
@@ -104,13 +102,17 @@ export const fetchFavourites = (token, userId) => {
     };
 };
 
-export const addToFavourites = (token, location, country, userId) => {
+export const addToFavourites = (token, location, country, userId, lat, lng) => {
     return dispatch => {
         const data = {
             location: location,
             countryCode: country,
-            userId: userId
+            userId: userId,
+            lat: lat,
+            lng: lng
         };
+
+        console.log(data);
         dispatch(addToFavouritesStart());
         axiosFirebase.post(`favourites.json?auth=${token}`, data)
             .then(response => {
@@ -135,18 +137,5 @@ export const removeFromFavourites = (id, token) => {
     }
 };
 
-export const fetchCurrentTime = (lat, lng) => {
-    return dispatch => {
-        dispatch(fetchCurrentTimeStart());
-        axiosTimeZoneDB.get(`/v2.1/get-time-zone?key=${config.TIME_ZONE_DB}&format=json=position&lat=${lat}&lng=${lng}`)
-            .then(response => {
-                console.log(response);
-                dispatch(fetchCurrentTimeSuccess(response))
-            })
-            .catch(error => {
-                dispatch(fetchCurrentTimeFail(error))
-            })
-    }
-};
 
 //TO DO fetch current time when loading
